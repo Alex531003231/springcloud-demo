@@ -24,6 +24,11 @@ public class ProductOrder implements Serializable {
     private String tradNo;
 
     /**
+     * 商品名称
+     */
+    private String productName;
+
+    /**
      * 商品价格
      */
     private Double price;
@@ -50,6 +55,14 @@ public class ProductOrder implements Serializable {
 
     public String getTradNo() {
         return tradNo;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public void setTradNo(String tradNo) {
