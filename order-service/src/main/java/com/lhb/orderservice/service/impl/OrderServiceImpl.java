@@ -1,6 +1,11 @@
 package com.lhb.orderservice.service.impl;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.lhb.orderservice.domain.ProductOrder;
+import com.lhb.orderservice.infra.feign.ProductClient;
+import com.lhb.orderservice.infra.utils.JsonUtils;
 import com.lhb.orderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -23,11 +28,13 @@ public class OrderServiceImpl implements OrderService {
     private RestTemplate restTemplate;
 //    @Autowired
     private LoadBalancerClient loadBalancerClient;
+    @Autowired
+    private ProductClient productClient;
 
     @Override
     public ProductOrder save(Integer userId, Integer productId) {
         //调用方式一
-        Map<String,Object> productMap= restTemplate.getForObject("http://product-service/api/v1/product/findById?id=" + productId, Map.class);
+//        Map<String,Object> productMap= restTemplate.getForObject("http://product-service/api/v1/product/findById?id=" + productId, Map.class);
 
         //调用方式二
 //        ServiceInstance instance = loadBalancerClient.choose("product-service");
@@ -35,13 +42,22 @@ public class OrderServiceImpl implements OrderService {
 //        RestTemplate restTemplate = new RestTemplate();
 //        Map<String,Object> productMap= restTemplate.getForObject(url, Map.class);
 
-        System.out.println("productMap-->"+productMap);
+        //调用方式三
+        String response = productClient.findById(productId);
+
+//        JsonNode jsonNode = JsonUtils.str2JsonNode(response);
+
+        JSONObject jsonNode = JSONUtil.parseObj(response);
+
+        System.out.println("jsonNode-->"+jsonNode);
         ProductOrder productOrder = new ProductOrder();
         productOrder.setCreateDate(new Date());
         productOrder.setUserId(userId);
         productOrder.setTradNo(UUID.randomUUID().toString());
-        productOrder.setPrice((Double) productMap.get("price"));
-        productOrder.setProductName(productMap.get("name").toString());
+//        productOrder.setPrice(jsonNode.get("price").doubleValue());
+        productOrder.setPrice((Double) jsonNode.get("price"));
+        productOrder.setProductName(jsonNode.get("name").toString());
+
 
         return productOrder;
     }
