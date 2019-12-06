@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: Created By haibo.li01@hand-china.com
@@ -46,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
         String response = productClient.findById(productId);
 
 //        JsonNode jsonNode = JsonUtils.str2JsonNode(response);
+
+        
 
         JSONObject jsonNode = JSONUtil.parseObj(response);
 
