@@ -1,6 +1,12 @@
 spring:
   application:
     name: order-service
+  # redis配置
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2000
 
 server:
   port: 8781
@@ -10,6 +16,19 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8000/eureka
 
+#自定义负载均衡策略
 #product-service:
 #  ribbon:
 #    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+#修改调用超时时间
+feign:
+#  开启feign支持 Hystrix (旧版本默认开启，新版本默认关闭)
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 2000
+        readTimeout: 2000
+
