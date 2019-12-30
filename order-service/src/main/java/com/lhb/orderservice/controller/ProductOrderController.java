@@ -33,8 +33,11 @@ public class ProductOrderController {
     @HystrixCommand(fallbackMethod = "saveOrderFail")
     public Object save(@RequestParam("user_id") Integer userId, @RequestParam("product_id") Integer productId, HttpServletRequest request) {
 
-        ProductOrder order = orderService.save(userId, productId);
-        return order;
+        Map<String,Object> data=new HashMap<>();
+        data.put("code",0);
+        data.put("data",orderService.save(userId,productId));
+//        ProductOrder order = orderService.save(userId, productId);
+        return data;
     }
 
     private Object saveOrderFail(Integer userId, Integer porductId, HttpServletRequest request) {

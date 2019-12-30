@@ -34,6 +34,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ProductOrder save(Integer userId, Integer productId) {
+        if (userId==1){
+            return null;
+        }
         //调用方式一
 //        Map<String,Object> productMap= restTemplate.getForObject("http://product-service/api/v1/product/findById?id=" + productId, Map.class);
 
@@ -47,8 +50,6 @@ public class OrderServiceImpl implements OrderService {
         String response = productClient.findById(productId);
 
 //        JsonNode jsonNode = JsonUtils.str2JsonNode(response);
-
-        
 
         JSONObject jsonNode = JSONUtil.parseObj(response);
 

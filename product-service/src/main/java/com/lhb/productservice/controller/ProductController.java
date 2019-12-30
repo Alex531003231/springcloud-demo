@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: Created By haibo.li01@hand-china.com
@@ -32,6 +33,13 @@ public class ProductController {
 
     @RequestMapping("/findById")
     public Product findById(Integer id){
+
+//        try {
+//            TimeUnit.SECONDS.sleep(2);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         Product product = productService.findById(id);
         Product result = new Product();
         BeanUtils.copyProperties(product,result);
